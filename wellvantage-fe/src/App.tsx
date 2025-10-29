@@ -45,14 +45,6 @@ const App = () => (
                 }
               />
               <Route
-                path='/lead/add'
-                element={
-                  <ProtectedRoute>
-                    <LeadAdd />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
                 path='/wv_leads'
                 element={
                   <ProtectedRoute>
