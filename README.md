@@ -84,6 +84,5 @@ The frontend app will start (default: http://localhost:8080).
 ## Development Notes
 
 - Ensure both backend and frontend are running for full functionality.
-- Update API endpoints in the frontend as needed to match backend routes.
 
 ---
