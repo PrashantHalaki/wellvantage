@@ -13,22 +13,14 @@ export const useAxios = (): AxiosInstance => {
   const navigate = useNavigate();
 
   const axiosInstance = useMemo(() => {
+    const token = getSessionToken();
     const instance = axios.create({
       baseURL,
       headers: {
         Accept: 'application/json',
         'Content-type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
-      withCredentials: true,
-    });
-
-    // Add request interceptor to add auth token on each request
-    instance.interceptors.request.use((config) => {
-      const token = getSessionToken();
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-      }
-      return config;
     });
 
     instance.interceptors.response.use(
@@ -39,10 +31,10 @@ export const useAxios = (): AxiosInstance => {
         console.error('Error in API response: ', err);
 
         // Only navigate if it's an auth error and we're not already on an auth page
-        if (err.response?.status === 401 && !window.location.pathname.includes('/signin')) {
-          console.log('Auth error detected, redirecting to signin');
+        if (err.response?.status === 401 && !window.location.pathname.includes('/signup')) {
+          console.log('Auth error detected, redirecting to signup');
           localStorage.clear();
-          navigate('/signin');
+          navigate('/signup');
         }
         return Promise.reject(err);
       }

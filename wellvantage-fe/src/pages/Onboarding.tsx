@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRef, useState, useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
-import { ArrowLeft } from 'lucide-react';
+
 import {
   Select,
   SelectContent,
@@ -15,11 +15,25 @@ import {
 } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
 import { LeftCover } from '@/components/LeftCover';
+import { send } from 'process';
 
 export default function Onboarding() {
-  const { user, completeOnboarding, signOut } = useAuth();
+  const {
+    user,
+    completeOnboarding,
+    signOut,
+    storeUserData,
+    storeAuthToken,
+    sendPhoneOtp,
+    verifyPhoneOtp,
+  } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  const hasRun = useRef(false);
+  const [searchParams] = useSearchParams();
+  const id_token = searchParams.get('id_token');
+  const userParams = searchParams.get('user');
 
   const [formData, setFormData] = useState({
     gymName: '',
@@ -40,12 +54,35 @@ export default function Onboarding() {
   const [isOtpVerified, setIsOtpVerified] = useState(false);
 
   useEffect(() => {
-    if (!user) {
-      navigate('/signup');
-    } else if (user.onboarded) {
-      navigate('/');
+    if (hasRun.current) return;
+    hasRun.current = true;
+    if (id_token) {
+      storeAuthToken(id_token);
     }
-  }, [user, navigate]);
+    if (userParams) {
+      const userData = JSON.parse(userParams);
+      storeUserData({
+        id: userData.sub,
+        firstName: userData.given_name,
+        lastName: userData.family_name,
+        email: userData.email,
+        isGymOwner: true,
+        onboarded: !!userData?.onboarded,
+      });
+
+      setFormData((prev) => ({
+        ...prev,
+        firstName: userData.given_name || '',
+        lastName: userData.family_name || '',
+      }));
+
+      if (userData?.onboarded) {
+        navigate('/dashboard');
+      }
+    } else {
+      navigate('/signup');
+    }
+  }, [id_token, userParams, storeAuthToken, storeUserData, navigate]);
 
   const handleInputChange = (field: string, value: string | boolean) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -74,12 +111,14 @@ export default function Onboarding() {
       });
       return;
     }
-
-    setShowOtp(true);
-    toast({
-      title: 'OTP Sent',
-      description: 'A verification code has been sent to your phone.',
-    });
+    const isOtpSent = sendPhoneOtp(formData.phoneNumber, formData.phoneCode);
+    if (isOtpSent) {
+      setShowOtp(true);
+      toast({
+        title: 'OTP Sent',
+        description: 'A verification code has been sent to your phone.',
+      });
+    }
   };
 
   const handleVerifyOtp = () => {
@@ -93,7 +132,8 @@ export default function Onboarding() {
       return;
     }
 
-    // Mock OTP verification - in real app, verify with backend
+    const isVerified = verifyPhoneOtp(formData.phoneNumber, otpValue);
+    if (!isVerified) return;
     setIsOtpVerified(true);
     toast({
       title: 'Phone Verified',
@@ -104,28 +144,11 @@ export default function Onboarding() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!isOtpVerified) {
-      toast({
-        title: 'Phone Verification Required',
-        description: 'Please verify your phone number before continuing.',
-        variant: 'destructive',
-      });
-      return;
-    }
-
-    if (!formData.agreedToPolicy) {
-      toast({
-        title: 'Privacy Policy Required',
-        description: 'Please agree to the privacy policy to continue.',
-        variant: 'destructive',
-      });
-      return;
-    }
-
-    completeOnboarding();
-    toast({
-      title: 'Welcome to Wellvantage!',
-      description: 'Your gym profile has been created successfully.',
+    completeOnboarding({
+      ...user,
+      onboardingData: {
+        ...formData,
+      },
     });
   };
 

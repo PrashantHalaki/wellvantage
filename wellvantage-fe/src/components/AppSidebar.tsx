@@ -13,6 +13,7 @@ import {
   X,
 } from 'lucide-react';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { useAuth } from '@/contexts/AuthContext';
 
 const navigationItems = [
   { title: 'Dashboard', icon: LayoutDashboard, url: '/dashboard' },
@@ -36,6 +37,7 @@ const navigationItems = [
 ];
 
 export function AppSidebar({ isOpen, onClose }: { isOpen?: boolean; onClose?: () => void }) {
+  const { signOut } = useAuth();
   return (
     <>
       {/* Mobile overlay */}
@@ -97,7 +99,10 @@ export function AppSidebar({ isOpen, onClose }: { isOpen?: boolean; onClose?: ()
             </Avatar>
             <span className='text-sm font-medium text-foreground'>David Smith</span>
           </div>
-          <button className='flex items-center gap-3 px-4 py-2 w-full text-foreground/70 hover:text-foreground transition-colors'>
+          <button
+            className='flex items-center gap-3 px-4 py-2 w-full text-foreground/70 hover:text-foreground transition-colors'
+            onClick={signOut}
+          >
             <LogOut className='w-5 h-5' />
             <span className='text-sm'>Logout</span>
           </button>
