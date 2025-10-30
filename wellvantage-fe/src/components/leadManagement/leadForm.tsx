@@ -11,9 +11,9 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { BasicDetails, CustomNote, Lead, LeadStatus, Preferences } from '@/utils/types';
+import { BasicDetails, CustomNote, emptyLead, Lead, LeadStatus, Preferences } from '@/utils/types';
 import { DatePicker } from '../ui/datepicker';
-import { toast } from 'sonner';
+import { useToast } from '@/hooks/use-toast';
 
 type TabType = 'Basic' | 'Preferences' | 'Status';
 
@@ -28,6 +28,8 @@ export default function LeadForm({
   selectedLead: number | null;
   lead: Lead | undefined;
 }) {
+  const { toast } = useToast();
+
   const [activeTab, setActiveTab] = useState<TabType>('Basic');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -91,17 +93,36 @@ export default function LeadForm({
     }
   }, [lead]);
 
-  const addCustomNote = () => {
-    const today = new Date().toLocaleDateString('en-IN', {
+  const getTodayDate = () => {
+    return new Date().toLocaleDateString('en-IN', {
       day: 'numeric',
       month: 'long',
       year: 'numeric',
     });
-    setCustomNotes([{ id: Date.now(), date: today, note: '' }, ...customNotes]);
+  };
+
+  const addCustomNote = () => {
+    setCustomNotes([{ id: Date.now(), date: getTodayDate(), note: '' }, ...customNotes]);
   };
 
   const updateBasicDetails = () => {
     if (selectedLead === null) return;
+    if (!firstName || !lastName) {
+      toast({
+        title: 'Validation Error',
+        description: 'First name and last name are required',
+        variant: 'destructive',
+      });
+      return;
+    }
+    if (email && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)) {
+      toast({
+        title: 'Validation Error',
+        description: 'Invalid email address',
+        variant: 'destructive',
+      });
+      return;
+    }
     setLeads((prevLeads: Lead[]) => {
       const updatedLeads: Lead[] = [...prevLeads];
       const updatedBasicDetails: BasicDetails = {
@@ -117,13 +138,27 @@ export default function LeadForm({
         weight,
         weightUnit: weightUnit as 'kg' | 'lbs',
       };
-      updatedLeads[selectedLead] = {
-        ...updatedLeads[selectedLead],
-        basicDetails: updatedBasicDetails,
-      };
+      if (updatedLeads[selectedLead]) {
+        updatedLeads[selectedLead] = {
+          ...updatedLeads[selectedLead],
+          lastInteraction: getTodayDate(),
+          basicDetails: updatedBasicDetails,
+        };
+      } else if (selectedLead - updatedLeads.length === 0) {
+        updatedLeads.push({
+          ...emptyLead,
+          lastInteraction: getTodayDate(),
+          id: selectedLead + 1,
+          basicDetails: updatedBasicDetails,
+        });
+      }
       return updatedLeads;
     });
-    toast.success('Basic details updated successfully');
+    toast({
+      title: 'Success',
+      description: 'Basic details updated successfully',
+      variant: 'default',
+    });
   };
 
   const updatePreferenceDetails = () => {
@@ -139,13 +174,27 @@ export default function LeadForm({
         medConcern: medicalConcerns,
         prevGymExperience: previousGymExperience,
       };
-      updatedLeads[selectedLead] = {
-        ...updatedLeads[selectedLead],
-        preferences: updatedPreferences,
-      };
+      if (updatedLeads[selectedLead]) {
+        updatedLeads[selectedLead] = {
+          ...updatedLeads[selectedLead],
+          lastInteraction: getTodayDate(),
+          preferences: updatedPreferences,
+        };
+      } else if (selectedLead - updatedLeads.length === 0) {
+        updatedLeads.push({
+          ...emptyLead,
+          lastInteraction: getTodayDate(),
+          id: selectedLead + 1,
+          preferences: updatedPreferences,
+        });
+      }
       return updatedLeads;
     });
-    toast.success('Preferences updated successfully');
+    toast({
+      title: 'Success',
+      description: 'Preferences updated successfully',
+      variant: 'default',
+    });
   };
 
   const updateStatusDetails = () => {
@@ -156,24 +205,33 @@ export default function LeadForm({
         inquiryDate,
         assignedTo,
         interestLevel: interestLevel as 'Cold' | 'Warm' | 'Hot',
-        lastInteraction: new Date().toLocaleDateString('en-IN', {
-          day: 'numeric',
-          month: 'long',
-          year: 'numeric',
-        }),
         followUpStatus,
         preferredPackage,
         preferredPtPackage,
         leadSource,
         notes: customNotes,
       };
-      updatedLeads[selectedLead] = {
-        ...updatedLeads[selectedLead],
-        status: updatedStatus,
-      };
+      if (updatedLeads[selectedLead]) {
+        updatedLeads[selectedLead] = {
+          ...updatedLeads[selectedLead],
+          lastInteraction: getTodayDate(),
+          status: updatedStatus,
+        };
+      } else if (selectedLead - updatedLeads.length === 0) {
+        updatedLeads.push({
+          ...emptyLead,
+          lastInteraction: getTodayDate(),
+          id: selectedLead + 1,
+          status: updatedStatus,
+        });
+      }
       return updatedLeads;
     });
-    toast.success('Status updated successfully');
+    toast({
+      title: 'Success',
+      description: 'Status updated successfully',
+      variant: 'default',
+    });
   };
 
   return (
@@ -251,6 +309,7 @@ export default function LeadForm({
                   onChange={(e) => {
                     setFirstName(e.target.value?.trim().replace(/[^A-Za-z ]/g, ''));
                   }}
+                  required
                 />
               </div>
               <div>
@@ -261,6 +320,7 @@ export default function LeadForm({
                   onChange={(e) => {
                     setLastName(e.target.value?.trim().replace(/[^A-Za-z ]/g, ''));
                   }}
+                  required
                 />
               </div>
             </div>

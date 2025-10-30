@@ -3,6 +3,7 @@ import { Lead } from './types';
 export const mockLeads: Lead[] = [
   {
     id: 1,
+    lastInteraction: "10 October, 2025",
     basicDetails: {
       firstName: "John",
       lastName: "Doe",
@@ -29,7 +30,6 @@ export const mockLeads: Lead[] = [
       inquiryDate: "01 October, 2025",
       assignedTo: "ram-mohan",
       interestLevel: "Hot",
-      lastInteraction: "10 October, 2025",
       followUpStatus: "contacted",
       preferredPackage: "premium",
       preferredPtPackage: "pt-premium",
@@ -41,6 +41,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: 2,
+    lastInteraction: "20 September, 2025",
     basicDetails: {
       firstName: "Jane",
       lastName: "Smith",
@@ -67,7 +68,6 @@ export const mockLeads: Lead[] = [
       inquiryDate: "15 September, 2025",
       assignedTo: "ratna-pathak",
       interestLevel: "Warm",
-      lastInteraction: "20 September, 2025",
       followUpStatus: "needs-followup",
       preferredPackage: "basic",
       preferredPtPackage: "pt-basic",
@@ -79,6 +79,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: 3,
+    lastInteraction: "10 August, 2025",
     basicDetails: {
       firstName: "Alex",
       lastName: "Johnson",
@@ -105,7 +106,6 @@ export const mockLeads: Lead[] = [
       inquiryDate: "5 August, 2025",
       assignedTo: "ram-mohan",
       interestLevel: "Hot",
-      lastInteraction: "10 August, 2025",
       followUpStatus: "converted",
       preferredPackage: "premium",
       preferredPtPackage: "pt-premium",
@@ -117,6 +117,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: 4,
+    lastInteraction: "25 July, 2025",
     basicDetails: {
       firstName: "Priya",
       lastName: "Kumar",
@@ -143,7 +144,6 @@ export const mockLeads: Lead[] = [
       inquiryDate: "22 July, 2025",
       assignedTo: "ratna-pathak",
       interestLevel: "Warm",
-      lastInteraction: "25 July, 2025",
       followUpStatus: "contacted",
       preferredPackage: "basic",
       preferredPtPackage: "package",
@@ -155,6 +155,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: 5,
+    lastInteraction: "20 June, 2025",
     basicDetails: {
       firstName: "Rahul",
       lastName: "Sharma",
@@ -181,7 +182,6 @@ export const mockLeads: Lead[] = [
       inquiryDate: "18 June, 2025",
       assignedTo: "ram-mohan",
       interestLevel: "Hot",
-      lastInteraction: "20 June, 2025",
       followUpStatus: "converted",
       preferredPackage: "premium",
       preferredPtPackage: "pt-premium",
@@ -193,6 +193,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: 6,
+    lastInteraction: "12 May, 2025",
     basicDetails: {
       firstName: "Sara",
       lastName: "Lee",
@@ -219,7 +220,6 @@ export const mockLeads: Lead[] = [
       inquiryDate: "10 May, 2025",
       assignedTo: "ratna-pathak",
       interestLevel: "Cold",
-      lastInteraction: "12 May, 2025",
       followUpStatus: "needs-followup",
       preferredPackage: "basic",
       preferredPtPackage: "package",
@@ -231,6 +231,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: 7,
+    lastInteraction: "5 April, 2025",
     basicDetails: {
       firstName: "David",
       lastName: "Brown",
@@ -257,7 +258,6 @@ export const mockLeads: Lead[] = [
       inquiryDate: "1 April, 2025",
       assignedTo: "ram-mohan",
       interestLevel: "Warm",
-      lastInteraction: "5 April, 2025",
       followUpStatus: "contacted",
       preferredPackage: "basic",
       preferredPtPackage: "pt-basic",
@@ -269,6 +269,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: 8,
+    lastInteraction: "18 March, 2025",
     basicDetails: {
       firstName: "Emily",
       lastName: "Clark",
@@ -295,7 +296,6 @@ export const mockLeads: Lead[] = [
       inquiryDate: "15 March, 2025",
       assignedTo: "ratna-pathak",
       interestLevel: "Hot",
-      lastInteraction: "18 March, 2025",
       followUpStatus: "converted",
       preferredPackage: "premium",
       preferredPtPackage: "pt-premium",
@@ -307,6 +307,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: 9,
+    lastInteraction: "12 February, 2025",
     basicDetails: {
       firstName: "Amit",
       lastName: "Patel",
@@ -333,7 +334,6 @@ export const mockLeads: Lead[] = [
       inquiryDate: "10 February, 2025",
       assignedTo: "ram-mohan",
       interestLevel: "Cold",
-      lastInteraction: "12 February, 2025",
       followUpStatus: "needs-followup",
       preferredPackage: "basic",
       preferredPtPackage: "package",
@@ -345,6 +345,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: 10,
+    lastInteraction: "10 January, 2025",
     basicDetails: {
       firstName: "Sneha",
       lastName: "Reddy",
@@ -371,7 +372,6 @@ export const mockLeads: Lead[] = [
       inquiryDate: "5 January, 2025",
       assignedTo: "ratna-pathak",
       interestLevel: "Hot",
-      lastInteraction: "10 January, 2025",
       followUpStatus: "converted",
       preferredPackage: "premium",
       preferredPtPackage: "pt-premium",
@@ -383,6 +383,7 @@ export const mockLeads: Lead[] = [
   },
   {
     id: 11,
+    lastInteraction: "10 October, 2025",
     basicDetails: {
       firstName: "Jonny",
       lastName: "Doe",
@@ -409,7 +410,6 @@ export const mockLeads: Lead[] = [
       inquiryDate: "01 October, 2025",
       assignedTo: "ram-mohan",
       interestLevel: "Hot",
-      lastInteraction: "10 October, 2025",
       followUpStatus: "contacted",
       preferredPackage: "premium",
       preferredPtPackage: "pt-premium",

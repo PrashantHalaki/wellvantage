@@ -15,7 +15,6 @@ import {
 } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
 import { LeftCover } from '@/components/LeftCover';
-import { send } from 'process';
 
 export default function Onboarding() {
   const {

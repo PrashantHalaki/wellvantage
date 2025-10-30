@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Search, Plus, ChevronDown, MessageCircle, Phone, Package, X } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -11,7 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Lead } from '@/utils/types';
+import { emptyLead, Lead } from '@/utils/types';
 
 const getInterestBadgeStyles = (level: string) => {
   switch (level) {
@@ -42,14 +42,17 @@ const getInterestEmoji = (level: string) => {
 export default function Leads({
   leads,
   setMode,
-  setSelectedLead,
 }: {
   leads: Lead[];
-  setMode: (mode: 'view' | 'edit') => void;
-  setSelectedLead: (selectedLead: number) => void;
+  setMode: (mode: 'view' | 'edit', index?: number | null) => void;
 }) {
   const [activeTab, setActiveTab] = useState<'Active' | 'Archieved'>('Active');
   const [currentPage, setCurrentPage] = useState(1);
+
+  const addNewLeadClick = () => {
+    const newLeadIndex = leads.length;
+    setMode('edit', newLeadIndex);
+  };
 
   return (
     <div className='h-full bg-background'>
@@ -62,7 +65,7 @@ export default function Leads({
           <Button
             size='icon'
             className='rounded-full bg-primary hover:bg-accent'
-            onClick={() => setMode('edit')}
+            onClick={() => addNewLeadClick()}
           >
             <Plus className='w-5 h-5' />
           </Button>
@@ -187,8 +190,7 @@ export default function Leads({
                       <span
                         className='text-primary font-medium hover:underline cursor-pointer'
                         onClick={() => {
-                          setSelectedLead((currentPage - 1) * 10 + index);
-                          setMode('edit');
+                          setMode('edit', (currentPage - 1) * 10 + index);
                         }}
                       >
                         {lead.basicDetails.firstName} {lead.basicDetails.lastName}
@@ -211,14 +213,16 @@ export default function Leads({
                   <td className='py-4 px-6 text-foreground/80 capitalize'>
                     {lead?.status?.assignedTo?.split('-').concat(' ').join(' ')}
                   </td>
-                  <td className='py-4 px-6 text-foreground/80'>{lead?.status?.lastInteraction}</td>
+                  <td className='py-4 px-6 text-foreground/80'>{lead?.lastInteraction}</td>
                   <td className='py-4 px-6'>
-                    <Badge
-                      variant='outline'
-                      className='bg-badge-followup text-badge-followup-text border-badge-followup-text/20 font-medium'
-                    >
-                      {lead?.status?.followUpStatus}
-                    </Badge>
+                    {lead?.status?.followUpStatus && (
+                      <Badge
+                        variant='outline'
+                        className='bg-badge-followup text-badge-followup-text border-badge-followup-text/20 font-medium'
+                      >
+                        {lead?.status?.followUpStatus}
+                      </Badge>
+                    )}
                   </td>
                   <td className='py-4 px-6'>
                     <div className='flex items-center gap-3'>

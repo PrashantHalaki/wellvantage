@@ -32,7 +32,6 @@ export type LeadStatus = {
   inquiryDate?: string;
   assignedTo?: string;
   interestLevel?: 'Cold' | 'Warm' | 'Hot';
-  lastInteraction?: string;
   followUpStatus?: string;
   preferredPackage?: string;
   preferredPtPackage?: string;
@@ -42,8 +41,18 @@ export type LeadStatus = {
 
 export type Lead = {
   id: number;
+  lastInteraction?: string;
   basicDetails: BasicDetails;
   preferences: Preferences;
   status: LeadStatus;
 }
 
+export const emptyLead: Lead = {
+  id: -1,
+  basicDetails: {
+    firstName: '',
+    lastName: '',
+  },
+  preferences: {},
+  status: {},
+};  

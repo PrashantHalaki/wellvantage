@@ -8,13 +8,18 @@ export default function LeadsPage() {
   const [mode, setMode] = useState<'view' | 'edit'>('view');
   const [selectedLead, setSelectedLead] = useState<number | null>(null);
 
+  const setModeWithIndex = (newMode: 'view' | 'edit', index: number | null = null) => {
+    setMode(newMode);
+    setSelectedLead(index);
+  };
+
   return (
     <>
       {mode === 'view' ? (
-        <Leads setMode={setMode} setSelectedLead={setSelectedLead} leads={leads} />
+        <Leads setMode={setModeWithIndex} leads={leads} />
       ) : (
         <LeadForm
-          setMode={setMode}
+          setMode={setModeWithIndex}
           setLeads={setLeads}
           selectedLead={selectedLead}
           lead={selectedLead !== null ? leads[selectedLead] : undefined}
