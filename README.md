@@ -17,9 +17,9 @@ Create a `.env` file in the `be/` directory. Example:
 
 ```env
 # Example backend environment variables
-GOOGLE_CLIENT_ID=
-GOOGLE_CLIENT_SECRET=
-GOOGLE_REDIRECT_URI=
+GOOGLE_CLIENT_ID=google_client_id
+GOOGLE_CLIENT_SECRET=google_client_secret
+GOOGLE_REDIRECT_URI=google_redirect_uri
 FRONTEND_URL=http://localhost:8080
 PORT=3000
 ```
@@ -41,12 +41,6 @@ Make sure to update these values as per your local or production setup.
 
 ```sh
 npm start
-```
-
-or (if available):
-
-```sh
-npm run dev
 ```
 
 The backend server will start (default: http://localhost:3000).
