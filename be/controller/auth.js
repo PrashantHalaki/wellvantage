@@ -52,7 +52,7 @@ exports.googleAuthCallback = async (req, res) => {
     }
 
     res.redirect(
-      process.env.FRONTEND_URL + `/onboarding?user=${JSON.stringify(user)}&id_token=${id_token}`
+      process.env.FRONTEND_URL + `/#/onboarding?user=${JSON.stringify(user)}&id_token=${id_token}`
     );
   } catch (err) {
     res.status(500).json({ error: 'Failed to authenticate with Google', details: err.message });
