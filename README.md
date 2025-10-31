@@ -49,8 +49,6 @@ The backend server will start (default: http://localhost:3000).
 
 ## Frontend (`wellvantage-fe/`)
 
-GH Pages Can be accessed at http://prashanthalaki.github.io/wellvantage/wellvantage-fe
-
 ### Environment Variables
 
 Create a `.env` file in the `wellvantage-fe/` directory. Example:
