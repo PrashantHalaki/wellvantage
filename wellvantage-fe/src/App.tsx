@@ -12,7 +12,6 @@ import NotFound from './pages/NotFound';
 import Index from './pages/Dashboard';
 import MainLayout from './layouts/MainLayout';
 import Leads from './pages/Leads';
-import LeadAdd from './pages/LeadAdd';
 
 const queryClient = new QueryClient();
 
@@ -21,7 +20,7 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <BrowserRouter>
+      <BrowserRouter basename='/wellvantage/wellvantage-fe'>
         <AuthProvider>
           <Routes>
             <Route path='/' element={<LandingScreen />} />

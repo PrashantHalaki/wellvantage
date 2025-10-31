@@ -49,6 +49,8 @@ The backend server will start (default: http://localhost:3000).
 
 ## Frontend (`wellvantage-fe/`)
 
+GH Pages Can be accessed at http://prashanthalaki.github.io/wellvantage/wellvantage-fe
+
 ### Environment Variables
 
 Create a `.env` file in the `wellvantage-fe/` directory. Example:
@@ -77,7 +79,7 @@ Update the API URL as needed to match your backend server location.
 npm run dev
 ```
 
-The frontend app will start (default: http://localhost:8080).
+The frontend app will start (default: http://localhost:8080/wellvantage/wellvantage-fe).
 
 ---
 
