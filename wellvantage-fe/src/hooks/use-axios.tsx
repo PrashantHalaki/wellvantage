@@ -11,9 +11,9 @@ const baseURL = API_BASE_URL;
 // Custom Hook
 export const useAxios = (): AxiosInstance => {
   const navigate = useNavigate();
+  const token = getSessionToken();
 
   const axiosInstance = useMemo(() => {
-    const token = getSessionToken();
     const instance = axios.create({
       baseURL,
       headers: {
@@ -28,8 +28,6 @@ export const useAxios = (): AxiosInstance => {
         return res;
       },
       (err: any) => {
-        console.error('Error in API response: ', err);
-
         // Only navigate if it's an auth error and we're not already on an auth page
         if (err.response?.status === 401 && !window.location.pathname.includes('/signup')) {
           console.log('Auth error detected, redirecting to signup');
@@ -41,7 +39,7 @@ export const useAxios = (): AxiosInstance => {
     );
 
     return instance;
-  }, [navigate]);
+  }, [navigate, token]);
 
   return axiosInstance;
 };
