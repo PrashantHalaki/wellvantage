@@ -20,7 +20,7 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <BrowserRouter basename='/wellvantage/wellvantage-fe'>
+      <BrowserRouter>
         <AuthProvider>
           <Routes>
             <Route path='/' element={<LandingScreen />} />
